@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            position: relative;
+        }
+
+        #head {
+            position: absolute;
+            /*color: red;*/
+        }
+    </style>
+</head>
+<body>
+<div id="head">O</div>
+<script>
+    const o = document.getElementById('head');
+    // console.dir(o);
+    let x = 0;
+    let y = 0;
+    let direction = 'right';
+
+    function step(direction) {
+        if (direction === 'right') {
+            o.style.left = `${x}px`;
+            x++;
+        }
+        if (direction === 'left') {
+            o.style.left = `${x}px`;
+            x--;
+        }
+
+        if (direction === 'down') {
+            o.style.top = `${y}px`;
+            y++;
+        }
+        if (direction === 'up') {
+            o.style.top = `${y}px`;
+            y--;
+        }
+
+        if (x >= document.documentElement.clientWidth - 15) {
+            x = 0;
+        }
+        if (x < 0) {
+            x = document.documentElement.clientWidth - 15;
+        }
+
+        if (y >= document.documentElement.clientHeight - 20) {
+            y = 0;
+        }
+        if (y < 0) {
+            y = document.documentElement.clientHeight - 20;
+        }
+
+
+    }
+
+
+    document.addEventListener('keydown', e => {
+        // console.log(e.code);
+
+        if (e.code === 'ArrowDown') {
+            direction = 'down';
+        }
+        if (e.code === 'ArrowUp') {
+            direction = 'up';
+        }
+
+        if (e.code === 'ArrowRight') {
+            direction = 'right';
+        }
+        if (e.code === 'ArrowLeft') {
+            direction = 'left';
+        }
+    });
+
+    setInterval("step(direction)", 10);
+</script>
+</body>
+</html>
