@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>SNAKE</title>
     <style>
         body {
             position: relative;
@@ -15,18 +15,32 @@
             position: absolute;
             /*color: red;*/
         }
+
+        #target {
+            position: absolute;
+            display: none;
+        }
     </style>
 </head>
 <body>
 <div id="head">O</div>
+<div id="target">X</div>
 <script>
     const o = document.getElementById('head');
+    const target = document.getElementById('target');
     // console.dir(o);
     let x = 0;
     let y = 0;
     let direction = 'right';
+    let interval = 10;
+    let headSize = 20;
+
+    const targetPosition = {
+        x, y
+    };
 
     function step(direction) {
+        // o.textContent = `O:${x},${y}`;
         if (direction === 'right') {
             o.style.left = `${x}px`;
             x++;
@@ -45,21 +59,38 @@
             y--;
         }
 
-        if (x >= document.documentElement.clientWidth - 15) {
+        if (x >= document.documentElement.clientWidth - 20) {
             x = 0;
         }
         if (x < 0) {
-            x = document.documentElement.clientWidth - 15;
+            x = document.documentElement.clientWidth - 20;
         }
 
-        if (y >= document.documentElement.clientHeight - 20) {
+        if (y >= document.documentElement.clientHeight - 30) {
             y = 0;
         }
         if (y < 0) {
-            y = document.documentElement.clientHeight - 20;
+            y = document.documentElement.clientHeight - 30;
         }
 
+        if (x + 10 > targetPosition.x
+            && targetPosition.x > x - 10
+            && y + 10 > targetPosition.y
+            && targetPosition.y > y - 10) {
+            console.log('ok');
+            interval--;
+            clearInterval(timerId);
+            timerId = setInterval('step(direction)', interval);
+            // headSize = headSize + 2;
+            // o.style.fontSize = `${headSize}px`;
+            targetGeneration()
+        }
 
+        // if (x === Math.floor(targetPosition.x)
+        // && y === Math.floor(targetPosition.y)){
+        //     console.log('ok');
+        //     targetGeneration();
+        // }
     }
 
 
@@ -79,9 +110,27 @@
         if (e.code === 'ArrowLeft') {
             direction = 'left';
         }
+
+        if (e.code === 'Space') {
+            targetGeneration()
+        }
     });
 
-    setInterval("step(direction)", 10);
+    let timerId = setInterval("step(direction)", interval);
+
+
+    function targetGeneration() {
+        targetPosition.x = Math.random() * (document.documentElement.clientWidth - 20);
+        targetPosition.y = Math.random() * (document.documentElement.clientHeight - 30);
+        target.style.display = 'block';
+        target.style.top = `${targetPosition.y}px`;
+        target.style.left = `${targetPosition.x}px`;
+        console.log(Math.floor(targetPosition.x),
+            Math.floor(targetPosition.y))
+    }
+
+    targetGeneration();
+
 </script>
 </body>
 </html>
